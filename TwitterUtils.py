@@ -1,4 +1,3 @@
-__author__ = 'manemarron'
 import time
 from urllib.parse import quote
 from application_only_auth import Client
@@ -18,7 +17,7 @@ def fix_date(date):
 
 
 def fix_tweets(tweets):
-    return [(t["id"], t["text"], fix_date(t["created_at"]), t["user"]["location"]) for t in tweets["statuses"]]
+    return [(t["id"], t["text"], fix_date(t["created_at"]), t["user"]["id"]) for t in tweets["statuses"]]
 
 
 class TwitterUtils:
@@ -33,7 +32,8 @@ class TwitterUtils:
 
     def search(self, q, **kwargs):
         url = URLS["search"]
-        return self.__request(url, {"q": q})
+        kwargs["q"] = q
+        return self.__request(url, kwargs)
 
     @staticmethod
     def __generate_query(kwargs):
