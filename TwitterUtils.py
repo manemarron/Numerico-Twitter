@@ -17,7 +17,19 @@ def fix_date(date):
 
 
 def fix_tweets(tweets):
-    return [(t["id"], t["text"], fix_date(t["created_at"]), t["user"]["id"]) for t in tweets["statuses"]]
+    columns = ["id", "text", "created_at", "user_id", "favorite_count", "retweet_count",
+               "in_reply_to_user_id", "in_reply_to_status_id", "latitude", "longitude"]
+    values = []
+    for t in tweets["statuses"]:
+        value = (t["id_str"], t["text"], fix_date(t["created_at"]), t["user"]["id_str"],
+                 t["favorite_count"], t["retweet_count"], t["in_reply_to_user_id_str"],
+                 t["in_reply_to_status_id_str"])
+        if t["coordinates"] is not None:
+            value += (t["coordinates"]["coordinates"][0], t["coordinates"]["coordinates"][1])
+        else:
+            value += (None, None)
+        values.append(value)
+    return columns, values
 
 
 class TwitterUtils:
