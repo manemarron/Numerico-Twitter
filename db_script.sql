@@ -23,16 +23,16 @@ ALTER TABLE query
 -- Table: tweets
 CREATE TABLE tweets
 (
-  id bigint NOT NULL,
+  id character varying(64) NOT NULL,
   text character varying(200) NOT NULL,
-  created_at timestamp without time zone NOT NULL,
-  user_id bigint NOT NULL,
   favorite_count integer NOT NULL DEFAULT 0,
   retweet_count integer NOT NULL DEFAULT 0,
-  in_reply_to_user_id bigint,
+  created_at timestamp without time zone NOT NULL,
+  user_id character varying(64) NOT NULL,
+  in_reply_to_user_id character varying(64),
+  in_reply_to_status_id character varying(64),
   latitude real,
   longitude real,
-  in_reply_to_status_id bigint,
   CONSTRAINT tweets_pk PRIMARY KEY (id)
 )
 WITH (

@@ -1,4 +1,4 @@
-import time
+from datetime import datetime
 from urllib.parse import quote
 from application_only_auth import Client
 
@@ -13,23 +13,23 @@ URLS = {
 
 
 def fix_date(date):
-    return time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(date, '%a %b %d %H:%M:%S +0000 %Y'))
-
+        return datetime.strptime(date, '%a %b %d %H:%M:%S +0000 %Y')
 
 def fix_tweets(tweets):
     columns = ["id", "text", "created_at", "user_id", "favorite_count", "retweet_count",
                "in_reply_to_user_id", "in_reply_to_status_id", "latitude", "longitude"]
+    update_columns = ["favorite_count", "retweet_count"]
     values = []
     for t in tweets["statuses"]:
         value = (t["id_str"], t["text"], fix_date(t["created_at"]), t["user"]["id_str"],
-                 t["favorite_count"], t["retweet_count"], t["in_reply_to_user_id_str"],
+                 int(t["favorite_count"]), int(t["retweet_count"]), t["in_reply_to_user_id_str"],
                  t["in_reply_to_status_id_str"])
         if t["coordinates"] is not None:
-            value += (t["coordinates"]["coordinates"][0], t["coordinates"]["coordinates"][1])
+            value += (float(t["coordinates"]["coordinates"][0]), float(t["coordinates"]["coordinates"][1]))
         else:
             value += (None, None)
         values.append(value)
-    return columns, values
+    return columns, update_columns, values
 
 
 class TwitterUtils:
