@@ -1,4 +1,5 @@
 import psycopg2
+import psycopg2.extras
 
 HOST = "localhost"
 PORT = 5432
@@ -15,11 +16,11 @@ class DbUtils:
         self.conn.close()
 
     def fetchone(self, table, columns, condition_values, conditions=None,sort=None):
-        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        cur = self.conn.cursor(cursor_factory= psycopg2.extras.DictCursor)
         columns = ",".join(x for x in tuple(columns))
         sql = "SELECT {1} FROM {0}".format(table, columns)
         if conditions  is not None:
-            sql += " AND ".join(x for x in conditions)
+            sql += " WHERE {}".format(" AND ".join(x for x in conditions))
         if sort is not None:
             sql += " ORDER BY {}".format(sort)
         cur.execute(sql, condition_values)
@@ -44,8 +45,8 @@ class DbUtils:
             return returning
 
     def selsert(self, table, insert_columns, insert_values, returning, select_columns=None, select_values=None):
-        select_columns = select_columns | insert_columns
-        select_values =  select_values | insert_values
+        select_columns = select_columns or insert_columns
+        select_values =  select_values or insert_values
         conditions = ["{}=%s".format(x) for x in select_columns]
         res = self.fetchone(table=table, columns=["*"], condition_values=select_values, conditions=conditions)
         if res is not None:
