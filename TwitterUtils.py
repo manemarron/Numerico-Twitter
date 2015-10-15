@@ -15,6 +15,7 @@ URLS = {
 def fix_date(date):
         return datetime.strptime(date, '%a %b %d %H:%M:%S +0000 %Y')
 
+
 def fix_tweets(tweets):
     columns = ["id", "text", "created_at", "user_id", "favorite_count", "retweet_count",
                "in_reply_to_user_id", "in_reply_to_status_id", "latitude", "longitude"]

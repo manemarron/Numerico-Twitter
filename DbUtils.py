@@ -15,11 +15,11 @@ class DbUtils:
     def close(self):
         self.conn.close()
 
-    def fetchone(self, table, columns, condition_values, conditions=None,sort=None):
-        cur = self.conn.cursor(cursor_factory= psycopg2.extras.DictCursor)
+    def fetchone(self, table, columns, condition_values, conditions=None, sort=None):
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         columns = ",".join(x for x in tuple(columns))
         sql = "SELECT {1} FROM {0}".format(table, columns)
-        if conditions  is not None:
+        if conditions is not None:
             sql += " WHERE {}".format(" AND ".join(x for x in conditions))
         if sort is not None:
             sql += " ORDER BY {}".format(sort)
@@ -46,13 +46,13 @@ class DbUtils:
 
     def selsert(self, table, insert_columns, insert_values, returning, select_columns=None, select_values=None):
         select_columns = select_columns or insert_columns
-        select_values =  select_values or insert_values
+        select_values = select_values or insert_values
         conditions = ["{}=%s".format(x) for x in select_columns]
         res = self.fetchone(table=table, columns=["*"], condition_values=select_values, conditions=conditions)
         if res is not None:
             ret = res[returning]
         else:
-            ret = self.insert(table=table, columns=insert_columns, values=insert_values,returning=returning)[0]
+            ret = self.insert(table=table, columns=insert_columns, values=insert_values, returning=returning)[0]
         return ret
 
     def upsert(self, table, columns, update_columns, values, returning=None):

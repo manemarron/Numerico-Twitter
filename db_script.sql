@@ -31,8 +31,8 @@ CREATE TABLE tweets
   user_id character varying(64) NOT NULL,
   in_reply_to_user_id character varying(64),
   in_reply_to_status_id character varying(64),
-  latitude real,
-  longitude real,
+  latitude character varying(64),
+  longitude character varying(64),
   CONSTRAINT tweets_pk PRIMARY KEY (id)
 )
 WITH (

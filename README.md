@@ -1,2 +1,2 @@
 # Numerico Twitter #
-Proyecto para ver como autómata celular la esparción de una idea en Twitter.
+Proyecto para ver como autómata celular el esparcimiento de una idea en Twitter.
