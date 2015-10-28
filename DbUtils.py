@@ -1,8 +1,8 @@
 import psycopg2
 import psycopg2.extras
 
-# HOST = "localhost"
-HOST = "numericodb.cm4vsdgnhr3d.us-west-2.rds.amazonaws.com"
+HOST = "localhost"
+# HOST = "numericodb.cm4vsdgnhr3d.us-west-2.rds.amazonaws.com"
 PORT = 5432
 DB_NAME = "numerico"
 USER = "numerico"
@@ -48,7 +48,7 @@ class DbUtils:
                 " INSERT INTO %(table)s (%(columns)s)"
                 " SELECT %(columns)s FROM new_values"
                 " WHERE NOT EXISTS (SELECT 1 FROM upsert up WHERE up.id=new_values.id)"
-            ).format(table=table, columns=columns, fields=fields, placeholder=placeholder)
+            ) % {"table":table, "columns":columns, "fields":fields, "placeholder":placeholder}
             self.cursor.execute(sql, values)
             if autocommit:
                 self.cursor.commit()
