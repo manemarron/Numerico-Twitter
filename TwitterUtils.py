@@ -8,7 +8,8 @@ CONSUMER_SECRET = "9cfmxsKUwQVzG3YStaTWlNjMMm2EIiFDIoWugdR9VQOdhyQ80g"
 API_URL = "https://api.twitter.com/1.1"
 
 URLS = {
-    "search": "/search/tweets.json"
+    "search": "/search/tweets.json",
+    "lookup_user": "/users/lookup.json"
 }
 
 
@@ -46,6 +47,10 @@ class TwitterUtils:
         url = URLS["search"]
         kwargs["q"] = q
         return self.__request(url, kwargs)
+
+    def lookup_user(self, id):
+        url = URLS["lookup_user"]
+        return self.__request(url, {"user_id": id})
 
     @staticmethod
     def __generate_query(kwargs):
