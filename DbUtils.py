@@ -27,6 +27,17 @@ class DbUtils:
         cur.close()
         return ret
 
+    def fetchall(self, table, columns, sort=None):
+        cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        columns = ",".join(x for x in tuple(columns))
+        sql = "SELECT %s FROM %s" % (columns, table)
+        if sort is not None:
+            sql += " ORDER BY {}".format(sort)
+        cur.execute(sql)
+        ret = cur.fetchall()
+        cur.close()
+        return ret
+
     def insert(self, table, columns, values, autocommit=False):
         if len(values) > 0:
             columns = ",".join(x for x in tuple(columns))
