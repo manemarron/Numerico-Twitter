@@ -10,6 +10,7 @@ parser.add_argument('-result-type', dest="result_type", default="mixed", help="R
 parser.add_argument('-max-id', dest="max_id", default=None, help="Maximum Id from which to start searching")
 parser.add_argument('-until', dest="until", default=None, help="Last date")
 parser.add_argument('-lang', dest="lang", default=None, help="Language")
+parser.add_argument('-table', dest="table", default="tweets", help="DB Table")
 args = parser.parse_args()
 q = args.q
 n = args.n
@@ -17,6 +18,7 @@ result_type = args.result_type
 max_id = args.max_id
 until = args.until
 lang = args.lang
+table = args.table
 
 twitter = TwitterUtils()
 db = DbUtils()
@@ -36,7 +38,7 @@ try:
         print("Request: %d" % (i+1,))
         result = twitter.search(**next_results)
         columns, update_columns, tweets = fix_tweets(result)
-        db.upsert(table="tweets", columns=columns, update_columns=update_columns, values=tweets)
+        db.upsert(table=table, columns=columns, update_columns=update_columns, values=tweets)
 
         if 'next_results' in result['search_metadata']:
             next_results = str(result['search_metadata']['next_results'][1:]).split('&')
