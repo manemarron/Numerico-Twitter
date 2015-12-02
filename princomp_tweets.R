@@ -3,8 +3,10 @@ library(ggplot2)
 library(ggfortify)
 library(rgl)
 
-term_freq <- read.csv("term_freq.csv",header = TRUE)
-words <- data.frame(fread("words.csv"))
+args <- commandArgs(trailingOnly = TRUE)
+
+term_freq <- read.csv("termfreq_americapumas.csv",header = TRUE)
+words <- read.csv("words_americapumas.txt",header = FALSE, col.names = c("word"))
 X <- sparseMatrix(i = term_freq$i, j = term_freq$j, x = term_freq$x)
 dimnames(X)[[2]] <- as.vector(words$word)
 z <- princomp(X, scale = TRUE, scores = TRUE)
