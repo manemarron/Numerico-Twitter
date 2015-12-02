@@ -19,8 +19,3 @@ with open("term_freq.csv","w") as f:
             cont = tweets[i].count(words[j])
             if cont > 0:
                 f.write(str(i+1) + "," + str(j+1) + "," + str(cont) + "\r\n")
-
-with open("words.csv","w") as f:
-    f.write("id,word\r\n")
-    for i in range(len(words)):
-        f.write(str(i) + "," + words[i] + "\r\n")
