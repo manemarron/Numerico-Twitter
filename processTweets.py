@@ -1,23 +1,16 @@
 from DbUtils import DbUtils
 import re
+import sys
 db = DbUtils()
 
-tweets = db.fetchall("tweets", ("text",), sort="id DESC")
+tweets = db.fetchall(sys.argv[2], ("text",), sort="id DESC")
 
 tweets = [re.sub(r'http(s?).* ?', '', x[0]).strip().lower() for x in tweets]
 tweets = list(set(tweets))
 print("Tweets: " + str(len(tweets)))
 
-words = [  # "star", "wars", "awakens", "force",
-         "starwars", "r2", "k2", "jedi", "VII", "episode", "win",  "tickets", "december",
-         "love", "hate", "can't", "cannot", "wait", "abrams", "excited", "trailer",
-         "theforceawakens","new","rt", "!!","kylo ren", "no","spot", "rumours", "movie", "best", "huge",
-         "premiere", "mistake", "spoiler", "lightsaber", "days", "counting", "ready", "upcoming",
-         "bring", "soundtrack", "disney", "watching", "teaser", "believe", "video", "details",
-         "nerd", "only", "looks", "ouch", "countdown", "holy shit", "come", "poster",
-         "cool", "fuck", "exciting", "honest", "like", "cry", "epic", "need", "really",
-         "chance", "only", "official", "pumped", "sucks"
-         ]
+with open(sys.argv[1]) as f:
+    words = f.read().splitlines()
 
 with open("term_freq.csv","w") as f:
     f.write("i,j,x\r\n")
